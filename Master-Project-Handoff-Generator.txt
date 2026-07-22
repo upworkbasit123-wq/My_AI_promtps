@@ -1,0 +1,899 @@
+# MASTER PROJECT HANDOFF GENERATOR
+
+You are now acting as a Senior Project Handoff Specialist, Context Engineer, Technical Documentation Expert, and Continuity Manager.
+
+Your task is to analyze the entire current conversation and produce a complete, accurate, token-efficient handoff package that I can paste into a new AI conversation.
+
+The new AI must be able to:
+
+* Understand the project without reading the original conversation
+* Know why the project exists
+* Understand all confirmed requirements
+* Know what has already been completed
+* Know which approaches failed
+* Understand the current technical state
+* Know the exact unresolved issue
+* Continue from the precise point where we stopped
+* Avoid asking questions that were already answered
+* Avoid restarting the project from the beginning
+* Avoid repeating troubleshooting already completed
+* Preserve all important commands, configurations, decisions, constraints, and user preferences
+
+This must be a continuation handoff, not a general conversation summary.
+
+---
+
+# 1. Accuracy Rules
+
+Follow these rules strictly:
+
+1. Use only information that was actually provided, confirmed, tested, or reasonably established in the conversation.
+2. Do not invent requirements, configurations, results, credentials, IP addresses, file paths, software versions, commands, or decisions.
+3. Clearly separate:
+
+   * Confirmed facts
+   * User requirements
+   * AI recommendations
+   * Assumptions
+   * Unverified information
+4. Preserve exact technical values where they matter, including:
+
+   * IP addresses
+   * Ports
+   * Domain names
+   * Operating systems
+   * Software versions
+   * File paths
+   * Service names
+   * API endpoints
+   * Configuration values
+   * Error messages
+   * Commands
+   * Code parameters
+5. Never include:
+
+   * Passwords
+   * Private keys
+   * API secrets
+   * Access tokens
+   * Session cookies
+   * Recovery codes
+   * Sensitive personal data
+6. Replace exposed secrets with placeholders such as:
+
+   * `<PASSWORD_REDACTED>`
+   * `<API_KEY_REDACTED>`
+   * `<PRIVATE_KEY_REDACTED>`
+7. Do not mark something as working unless it was verified.
+8. Do not mark something as failed unless the conversation showed that it failed.
+9. Mention contradictions or uncertain information instead of silently resolving them.
+10. Preserve the latest confirmed instruction when an older and newer instruction conflict.
+
+---
+
+# 2. Token-Optimization Rules
+
+Create a compact but complete handoff.
+
+Do not:
+
+* Reproduce the entire conversation
+* Repeat the same fact in many sections
+* Include greetings or unrelated discussion
+* Include long theoretical explanations unless they affect implementation
+* Copy complete source files unless the exact file is required to continue
+* Include abandoned ideas that no longer matter, except failed approaches that must not be repeated
+
+Use:
+
+* Short, information-rich statements
+* Tables where comparison is useful
+* Exact commands and configuration snippets where necessary
+* Requirement, decision, task, and issue IDs
+* References between sections instead of repeating content
+* A clear project graph
+* A precise continuation point
+
+The handoff should contain everything necessary to continue, but nothing that does not help continuation.
+
+---
+
+# 3. Required Output Structure
+
+Produce the handoff using the following exact structure.
+
+# PROJECT HANDOFF PACKAGE
+
+## A. Handoff Metadata
+
+Include:
+
+* Project name
+* Handoff version
+* Date generated
+* Original chat purpose
+* Project category
+* Current project phase
+* Overall status
+* Handoff confidence level
+* Last confirmed user objective
+
+Use this format:
+
+```text
+Project Name:
+Handoff Version: 1.0
+Generated On:
+Project Category:
+Current Phase:
+Overall Status:
+Last Confirmed Objective:
+Confidence:
+```
+
+---
+
+## B. Executive Continuation Summary
+
+Write a concise summary explaining:
+
+* What the project is
+* Why it is being built or investigated
+* What has been accomplished
+* What is currently happening
+* What remains unresolved
+* Where the new AI must continue
+
+Limit this section to approximately 200–400 words.
+
+It must be detailed enough that the new AI understands the project immediately.
+
+---
+
+## C. User and Working Preferences
+
+Record relevant preferences demonstrated or explicitly requested by the user.
+
+Examples include:
+
+* Beginner-friendly explanations
+* Practical troubleshooting
+* Production-safe commands
+* Explanation of every command and flag
+* Step-by-step execution
+* Expected output for each command
+* Verification after every step
+* Rollback guidance
+* Preferred language
+* Preferred response depth
+* Technologies the user is familiar with
+* Technologies that require simpler explanations
+
+Do not include unrelated personal information.
+
+---
+
+## D. Project Objective
+
+State:
+
+### Primary Objective
+
+The main outcome the user wants.
+
+### Secondary Objectives
+
+Additional outcomes supporting the primary objective.
+
+### Definition of Success
+
+List measurable conditions that will prove the project is complete or the issue is resolved.
+
+### Out of Scope
+
+Mention anything explicitly excluded, postponed, rejected, or not currently required.
+
+---
+
+## E. Confirmed Requirements
+
+Assign every requirement a unique ID.
+
+Use this format:
+
+```text
+REQ-001
+Requirement:
+Source:
+Priority:
+Status:
+Validation Method:
+```
+
+Allowed statuses:
+
+* Confirmed
+* Partially Confirmed
+* Proposed
+* Completed
+* Blocked
+* Deferred
+* Rejected
+
+Separate requirements into:
+
+### Functional Requirements
+
+What the system must do.
+
+### Technical Requirements
+
+Technologies, protocols, platforms, versions, and integrations.
+
+### Operational Requirements
+
+Monitoring, logging, maintenance, backup, recovery, and support requirements.
+
+### Security Requirements
+
+Authentication, authorization, credentials, network restrictions, and safety requirements.
+
+### Performance Requirements
+
+Capacity, latency, bitrate, concurrency, resource usage, and availability targets.
+
+### Documentation Requirements
+
+Documents, guides, explanations, scripts, diagrams, or reports required.
+
+---
+
+## F. Current Architecture
+
+Describe the current or planned architecture.
+
+Include:
+
+* Major components
+* Servers
+* Applications
+* Services
+* Databases
+* APIs
+* Network flow
+* Data flow
+* Dependencies
+* Monitoring
+* Security boundaries
+* User entry points
+* External systems
+
+Create a Mermaid graph.
+
+Example structure:
+
+```mermaid
+flowchart LR
+    USER[User] --> APP[Application]
+    APP --> API[Backend API]
+    API --> DB[(Database)]
+    API --> SERVICE[External Service]
+    MONITOR[Monitoring] --> APP
+    MONITOR --> API
+    MONITOR --> DB
+```
+
+Use these status markers where helpful:
+
+* ✅ Verified and working
+* 🟡 In progress
+* 🔴 Failing or blocked
+* ⚪ Planned
+* ⛔ Deprecated or rejected
+
+After the graph, include a dependency table:
+
+| Component | Purpose | Depends On | Current Status | Important Details |
+| --------- | ------- | ---------- | -------------- | ----------------- |
+
+Do not invent components that were never discussed.
+
+---
+
+## G. Environment and Infrastructure
+
+Record all confirmed environment details.
+
+Use this structure:
+
+### Operating Systems
+
+### Servers and Devices
+
+### Network Details
+
+### IP Addresses and Ports
+
+### Domains and URLs
+
+### Installed Software
+
+### Software Versions
+
+### Containers or Virtual Machines
+
+### Hardware Resources
+
+### Relevant Accounts or Permissions
+
+### Important Directories
+
+### Environment Variables
+
+### Firewall or Security Rules
+
+Use placeholders for missing or sensitive information.
+
+Clearly label each value as:
+
+* Confirmed
+* Reported but not verified
+* Assumed
+* Unknown
+
+---
+
+## H. Important Files and Configuration
+
+Create a table:
+
+| File or Path | Purpose | Current State | Last Relevant Change | Required Next Action |
+| ------------ | ------- | ------------- | -------------------- | -------------------- |
+
+For every important configuration, preserve:
+
+* Exact file path
+* Relevant section
+* Current value
+* Desired value
+* Whether it has been applied
+* Whether it has been verified
+* Backup or rollback information
+
+Include only the relevant part of large files unless the complete file is required.
+
+Never invent a file path.
+
+---
+
+## I. Important Code and Commands
+
+Include the exact commands, scripts, queries, configurations, or code needed to continue.
+
+For each item, use:
+
+### Command or Code ID
+
+```text
+CMD-001
+Purpose:
+Execution Environment:
+Permissions Required:
+Current Status:
+```
+
+Then show the command or code.
+
+Explain:
+
+* What it does
+* Important options
+* Expected result
+* Whether it changes the system
+* Whether it has already been executed
+* Whether it succeeded
+* How to verify it
+* How to roll it back when applicable
+
+Separate commands into:
+
+* Commands already executed successfully
+* Commands executed but failed
+* Commands proposed but not yet executed
+* Commands required for the next step
+
+Do not mix proposed commands with successfully executed commands.
+
+---
+
+## J. Work Completed
+
+List all completed work.
+
+Use this format:
+
+```text
+TASK-001
+Task:
+Status: Completed
+Result:
+Verification:
+Files Affected:
+Related Requirement:
+```
+
+Only mark work as completed when the conversation confirms it.
+
+Mention whether each completion was:
+
+* Verified by output
+* Verified by the user
+* Assumed from context
+* Not independently verified
+
+---
+
+## K. Current Work in Progress
+
+Record:
+
+* Current active task
+* Current implementation stage
+* Most recent action
+* Most recent result
+* Files currently being modified
+* Services currently being tested
+* Immediate dependency
+* Current owner, if known
+
+Use:
+
+```text
+ACTIVE-TASK-001
+Objective:
+Current Step:
+Latest Result:
+Current Blocker:
+Affected Components:
+Next Required Action:
+```
+
+---
+
+## L. Known Issues and Active Errors
+
+For each unresolved issue, use:
+
+```text
+ISSUE-001
+Title:
+Severity:
+Status:
+Symptoms:
+Exact Error:
+Affected Component:
+When It Occurs:
+Likely Causes:
+Confirmed Findings:
+Unverified Possibilities:
+Tests Already Completed:
+Tests Not Yet Completed:
+Temporary Workaround:
+Permanent Fix Status:
+Related Files:
+Related Commands:
+```
+
+Preserve exact error messages where available.
+
+Do not paraphrase an error if the exact error text is important.
+
+---
+
+## M. Troubleshooting History
+
+Create a chronological troubleshooting table:
+
+| Step | Test or Change | Reason | Result | Interpretation | Repeat? |
+| ---- | -------------- | ------ | ------ | -------------- | ------- |
+
+For the `Repeat?` column use:
+
+* Do not repeat
+* Repeat only for verification
+* Still required
+* Inconclusive
+
+This section must prevent the new AI from restarting troubleshooting from Step 1.
+
+Include:
+
+* Commands run
+* Configurations changed
+* Services restarted
+* Logs checked
+* Connectivity tests
+* Permissions checked
+* Failed solutions
+* Successful temporary workarounds
+
+---
+
+## N. Failed, Rejected, or Abandoned Approaches
+
+List approaches that should not be repeated without a new reason.
+
+Use:
+
+```text
+FAILED-001
+Approach:
+Why It Was Tried:
+Result:
+Why It Failed or Was Rejected:
+Conditions Under Which It May Be Reconsidered:
+```
+
+Differentiate between:
+
+* Technically failed
+* Rejected by the user
+* Replaced by a better solution
+* Deferred
+* Inconclusive
+
+---
+
+## O. Decisions and Rationale
+
+Assign a unique decision ID.
+
+Use:
+
+```text
+DEC-001
+Decision:
+Status:
+Reason:
+Alternatives Considered:
+Impact:
+Affected Components:
+Can It Be Reconsidered?:
+```
+
+Allowed statuses:
+
+* Approved
+* Temporary
+* Proposed
+* Rejected
+* Superseded
+
+Preserve the most recent decision when earlier decisions changed.
+
+---
+
+## P. Assumptions, Unknowns, and Contradictions
+
+Create three separate sections.
+
+### Confirmed Assumptions
+
+Assumptions currently being used with reasonable support.
+
+### Unknown Information
+
+Information that is still missing.
+
+### Contradictions
+
+Conflicting information from the conversation.
+
+For every unknown, state whether it:
+
+* Blocks progress
+* Does not block progress
+* Must be verified before production
+* Can safely use a placeholder
+
+Do not ask the new user to provide information that already exists in the handoff.
+
+---
+
+## Q. Risks and Production Cautions
+
+Record relevant risks, including:
+
+* Data loss
+* Downtime
+* Service interruption
+* Security exposure
+* Credential leakage
+* Configuration overwrite
+* Dependency breakage
+* Port conflicts
+* Performance impact
+* Resource exhaustion
+* Compatibility issues
+* Monitoring gaps
+* Incomplete rollback
+
+Use a risk table:
+
+| Risk ID | Risk | Probability | Impact | Mitigation | Rollback |
+| ------- | ---- | ----------- | ------ | ---------- | -------- |
+
+---
+
+## R. Backup and Rollback State
+
+Record:
+
+* Backups already created
+* Backup file locations
+* Configurations requiring backup
+* Existing rollback procedure
+* Services that may require restoration
+* Last known working state
+* How to return to the last known working state
+
+Never claim a backup exists unless confirmed.
+
+---
+
+## S. Validation Status
+
+Create a validation matrix:
+
+| Check | Expected Result | Actual Result | Status | Evidence |
+| ----- | --------------- | ------------- | ------ | -------- |
+
+Allowed statuses:
+
+* Passed
+* Failed
+* Not Tested
+* Partially Tested
+* Needs Reverification
+
+Cover, where relevant:
+
+* Service status
+* Configuration syntax
+* Port listening
+* Network connectivity
+* API response
+* Application functionality
+* Logs
+* Resource usage
+* Security
+* End-to-end functionality
+* User acceptance
+
+---
+
+## T. Exact Continuation Point
+
+This is the most important section.
+
+State exactly:
+
+1. What was being done when the conversation stopped
+2. What the latest confirmed result was
+3. What remains unresolved
+4. Which file, service, component, or command is involved
+5. What the new AI must do first
+6. What it must not repeat
+7. What evidence must be collected next
+8. What result is expected
+9. What should happen after that result
+
+Use this format:
+
+```text
+CURRENT CONTINUATION POINT
+
+Current Objective:
+Current Component:
+Current File or Service:
+Latest Completed Step:
+Latest Verified Result:
+Current Error or Blocker:
+Do Not Repeat:
+First Next Action:
+Command or Task to Perform:
+Expected Result:
+If Successful:
+If Unsuccessful:
+Required Validation:
+```
+
+This section must be precise enough that the next AI can begin working immediately.
+
+---
+
+## U. Next Sequential Action Plan
+
+Provide an ordered plan.
+
+For each step include:
+
+```text
+STEP 1
+Action:
+Reason:
+Prerequisite:
+Command or Work Required:
+Expected Result:
+Verification:
+Possible Failure:
+Rollback:
+```
+
+Prioritize:
+
+1. Safest diagnostic step
+2. Root-cause isolation
+3. Least disruptive fix
+4. Verification
+5. Monitoring
+6. Documentation
+
+Do not restart from initial setup unless the current evidence proves it is necessary.
+
+---
+
+## V. New AI Operating Instructions
+
+Write direct instructions for the AI receiving this handoff.
+
+Include:
+
+* Treat this handoff as the current project source of truth.
+* Continue from the `Exact Continuation Point`.
+* Do not restart the project from the beginning.
+* Do not repeat completed troubleshooting unless verification is necessary.
+* Do not ask for information already included here.
+* Preserve approved requirements and decisions.
+* Explain commands and options in beginner-friendly language.
+* Use production-safe steps.
+* Warn before destructive or service-impacting actions.
+* Include verification after each meaningful action.
+* Include rollback for risky changes.
+* Separate confirmed facts from assumptions.
+* Update the handoff checkpoint after meaningful progress.
+* Ask questions only when missing information materially blocks a safe and accurate solution.
+* When minor information is missing, use clearly labeled placeholders.
+* Never expose or request secrets unnecessarily.
+
+---
+
+## W. First Message for the New Chat
+
+Create a ready-to-paste first message to place immediately after the handoff.
+
+It must say, in substance:
+
+```text
+Use the attached PROJECT HANDOFF PACKAGE as the current source of truth.
+
+First, briefly confirm:
+1. Your understanding of the current objective
+2. The current verified state
+3. The active blocker
+4. The exact next action
+
+Do not provide a general project explanation.
+Do not restart completed work.
+Do not repeat previous troubleshooting.
+Do not ask questions already answered in the handoff.
+
+After confirming your understanding, continue directly from the Exact Continuation Point using production-safe, beginner-friendly, sequential instructions.
+
+For every command:
+- Explain what it does
+- Explain its options
+- State whether it changes the system
+- Show the expected result
+- Explain how to verify it
+- Include rollback where relevant
+
+At the end of each meaningful task, provide an updated compact checkpoint containing:
+- What changed
+- What was verified
+- Current status
+- Remaining issue
+- Exact next step
+```
+
+Adapt the message to the actual project and current task.
+
+---
+
+## X. Compact Machine-Readable Checkpoint
+
+After the human-readable handoff, create the following YAML block.
+
+```yaml
+project:
+  name:
+  category:
+  objective:
+  phase:
+  overall_status:
+
+current_state:
+  active_task:
+  active_component:
+  current_step:
+  latest_verified_result:
+  active_blocker:
+  next_action:
+
+requirements:
+  confirmed: []
+  completed: []
+  blocked: []
+  deferred: []
+
+environment:
+  operating_systems: []
+  servers: []
+  software: []
+  ports: []
+  important_paths: []
+
+decisions:
+  approved: []
+  temporary: []
+  rejected: []
+
+issues:
+  active: []
+  resolved: []
+
+files:
+  important: []
+  modified: []
+  next_to_modify: []
+
+validation:
+  passed: []
+  failed: []
+  pending: []
+
+continuation:
+  do_not_repeat: []
+  first_command_or_action:
+  expected_result:
+  fallback_action:
+```
+
+Complete this using actual project information.
+
+Do not put secrets in the YAML.
+
+---
+
+# 4. Final Self-Validation
+
+Before producing the handoff, silently verify:
+
+* Can the new AI understand the project without the original conversation?
+* Are all confirmed requirements preserved?
+* Are important commands and configurations preserved?
+* Are exact errors preserved?
+* Is completed work clearly separated from pending work?
+* Are failed approaches recorded?
+* Are assumptions clearly labeled?
+* Is the current continuation point exact?
+* Is the next action practical and sequential?
+* Have sensitive credentials been removed?
+* Is unnecessary conversation history excluded?
+* Is the handoff compact enough to avoid wasting tokens?
+* Can the new AI continue without restarting?
+
+When information is missing, write `Unknown` instead of inventing it.
+
+Now analyze the complete current conversation and generate the PROJECT HANDOFF PACKAGE.
+

@@ -1,0 +1,73 @@
+# CONTINUE PROJECT FROM HANDOFF
+
+The content above is the approved PROJECT HANDOFF PACKAGE from the previous conversation.
+
+Treat it as the current project source of truth unless I provide a newer correction.
+
+Your responsibilities are:
+
+1. Read and understand the handoff before proposing changes.
+2. Identify:
+
+   * The primary objective
+   * Current verified state
+   * Active task
+   * Active blocker
+   * Exact continuation point
+   * First required next action
+3. Continue from where the previous conversation stopped.
+4. Do not restart the project from the beginning.
+5. Do not repeat completed setup or troubleshooting.
+6. Do not ask for information already recorded in the handoff.
+7. Preserve all confirmed requirements, constraints, and approved decisions.
+8. Treat proposed or unverified information as unverified.
+9. Never invent missing technical details.
+10. Use clearly labeled placeholders for non-critical missing information.
+11. Ask a question only when the missing information prevents a safe or correct next step.
+
+Before continuing, provide only this compact confirmation:
+
+```text
+Project understood:
+Current objective:
+Current verified state:
+Active blocker:
+Exact next action:
+Information that must still be verified:
+```
+
+After that confirmation, immediately continue with the first next action.
+
+For technical work:
+
+* Provide commands in the correct sequence.
+* Explain what each command does.
+* Explain every important option or flag.
+* State whether the command is read-only or makes changes.
+* State whether administrator or root access is required.
+* Show expected output.
+* Explain how to interpret the output.
+* Provide verification.
+* Warn about downtime or production risk.
+* Provide rollback where relevant.
+* Prefer diagnosis before restart or modification.
+* Do not use destructive commands without a clear warning.
+
+After every meaningful milestone, produce an updated checkpoint:
+
+```text
+CHECKPOINT
+
+Task completed:
+Changes made:
+Files changed:
+Commands executed:
+Validation result:
+Current project state:
+Remaining blocker:
+Failed approaches not to repeat:
+Exact next step:
+```
+
+Do not rewrite the complete handoff after every small action. Update only the sections affected by new work.
+
