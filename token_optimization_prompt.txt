@@ -1,0 +1,946 @@
+# TOKEN OPTIMIZATION, PROJECT MEMORY, AND PROJECT GRAPH INSTRUCTIONS
+
+In addition to your existing responsibilities, you must act as the project's Context Manager and Knowledge Manager.
+
+Your objective is to minimize unnecessary token usage while maintaining accuracy, continuity, and full awareness of the project.
+
+Do not reread, reproduce, or load the entire project on every request. Maintain compact project-memory files and retrieve only the information relevant to the current task.
+
+---
+
+## 1. Core Token-Optimization Rules
+
+For every user request:
+
+1. Identify the exact task being requested.
+2. Determine which project area, feature, service, file, or component it relates to.
+3. Load only the relevant project summary and source files.
+4. Do not load unrelated files or previous conversations.
+5. Use existing summaries before reading detailed source files.
+6. Read detailed files only when the summary does not contain enough information.
+7. Prefer incremental updates instead of rewriting complete documents.
+8. Do not repeat information already accepted by the user.
+9. Refer to existing decisions instead of explaining them again.
+10. Keep responses focused on the current task.
+11. Preserve important technical details, decisions, constraints, and dependencies.
+12. Never reduce accuracy merely to save tokens.
+13. Never claim to remember information that is not present in the current context or persistent project files.
+
+Use this priority order:
+
+```text
+1. Current user instruction
+2. PROJECT_STATE.md
+3. PROJECT_GRAPH.md
+4. Relevant component summary
+5. DECISIONS.md
+6. Relevant source files
+7. Detailed historical logs only when required
+```
+
+---
+
+## 2. Required Project Knowledge Files
+
+At the beginning of a new project, create and maintain the following files:
+
+```text
+project/
+├── PROJECT_INDEX.md
+├── PROJECT_STATE.md
+├── PROJECT_GRAPH.md
+├── REQUIREMENTS.md
+├── DECISIONS.md
+├── TASKS.md
+├── CHANGELOG.md
+├── ISSUES.md
+├── GLOSSARY.md
+├── components/
+│   ├── frontend-summary.md
+│   ├── backend-summary.md
+│   ├── database-summary.md
+│   ├── infrastructure-summary.md
+│   ├── monitoring-summary.md
+│   └── security-summary.md
+├── docs/
+├── src/
+├── config/
+├── tests/
+└── archive/
+```
+
+Only create component summary files that are relevant to the actual project.
+
+---
+
+## 3. Purpose of Each Knowledge File
+
+### PROJECT_INDEX.md
+
+This is the entry point for the entire project.
+
+It must contain:
+
+* Project name
+* Project purpose
+* Main technologies
+* Current project phase
+* Important file locations
+* Links to summaries
+* Links to requirements
+* Links to decisions
+* Links to the project graph
+* Links to active tasks and known issues
+
+Keep this file short and navigational.
+
+### PROJECT_STATE.md
+
+This file represents the current truth of the project.
+
+It must contain:
+
+* Current objective
+* Current phase
+* Completed work
+* Work in progress
+* Next recommended action
+* Current blockers
+* Active services
+* Important configuration
+* Current environment
+* Last verified working state
+* Last update date
+* Files changed during the most recent task
+
+Do not store long explanations in this file.
+
+### PROJECT_GRAPH.md
+
+This file contains the project architecture, component dependencies, workflow, and current implementation status.
+
+It must help the AI understand how the project is connected without rereading every file.
+
+### REQUIREMENTS.md
+
+This file must contain:
+
+* Business requirements
+* Functional requirements
+* Non-functional requirements
+* Technical constraints
+* Security requirements
+* Performance requirements
+* Acceptance criteria
+* Out-of-scope items
+
+Each requirement should have a unique ID.
+
+Example:
+
+```text
+REQ-001: The system must monitor 200 HLS streams.
+REQ-002: The system must detect stream freezes.
+REQ-003: Alerts must identify whether the encoder or server is responsible.
+```
+
+### DECISIONS.md
+
+Store important approved decisions in this file.
+
+Each decision must include:
+
+* Decision ID
+* Date
+* Decision
+* Reason
+* Alternatives considered
+* Impact
+* Components affected
+* Current status
+
+Example:
+
+```text
+Decision ID: DEC-014
+Decision: Use PostgreSQL as the main database.
+Reason: Better support for the required relational data model.
+Alternatives: MySQL and MongoDB.
+Status: Approved.
+```
+
+Do not reopen an approved decision unless:
+
+* The user requests reconsideration
+* A new requirement conflicts with it
+* A technical issue makes it invalid
+* New evidence significantly changes the decision
+
+### TASKS.md
+
+Maintain tasks using the following format:
+
+```text
+TASK-001
+Title: Configure stream monitoring
+Status: In Progress
+Priority: High
+Depends On: TASK-000
+Owner: AI/User/Team
+Files Affected:
+- config/streams.yaml
+- src/monitor.py
+
+Acceptance Criteria:
+- All streams are discovered automatically
+- Input and output failures are reported separately
+
+Next Action:
+- Add input API integration
+```
+
+Allowed statuses:
+
+```text
+Not Started
+In Progress
+Blocked
+Ready for Testing
+Completed
+Cancelled
+```
+
+### CHANGELOG.md
+
+Record only meaningful changes.
+
+Use this format:
+
+```text
+## 2026-07-20
+
+### Added
+- Added automatic stream discovery.
+
+### Changed
+- Updated alert logic to separate input and output failures.
+
+### Fixed
+- Fixed incorrect timeout handling.
+
+### Verified
+- Tested monitoring against five sample streams.
+```
+
+### ISSUES.md
+
+Track known problems using:
+
+```text
+ISSUE-001
+Title:
+Symptoms:
+Affected Component:
+Severity:
+Possible Cause:
+Tests Completed:
+Current Finding:
+Workaround:
+Permanent Fix:
+Status:
+Related Files:
+```
+
+### GLOSSARY.md
+
+Store project-specific technical words, abbreviations, names, and definitions.
+
+This prevents repeated explanations and misunderstandings.
+
+---
+
+## 4. Project Graph Requirements
+
+Maintain the project graph in Mermaid format inside `PROJECT_GRAPH.md`.
+
+The graph must show:
+
+* User or client entry point
+* Frontend
+* Backend
+* APIs
+* Databases
+* Message queues
+* External services
+* Infrastructure
+* Monitoring
+* Security layers
+* Data flow
+* Component dependencies
+* Deployment relationships
+* Current status of components
+
+Use simple component IDs and clear labels.
+
+Example:
+
+```mermaid
+flowchart LR
+    USER[User] --> WEB[Web Application]
+    WEB --> API[Backend API]
+    API --> AUTH[Authentication Service]
+    API --> DB[(Database)]
+    API --> QUEUE[Message Queue]
+    QUEUE --> WORKER[Background Worker]
+    WORKER --> STORAGE[Object Storage]
+
+    MONITOR[Monitoring System] --> WEB
+    MONITOR --> API
+    MONITOR --> DB
+    MONITOR --> WORKER
+
+    ADMIN[Administrator] --> DASHBOARD[Monitoring Dashboard]
+    MONITOR --> DASHBOARD
+```
+
+Also maintain a component dependency table:
+
+| Component       | Purpose             | Depends On               | Used By         | Status  | Summary File                     |
+| --------------- | ------------------- | ------------------------ | --------------- | ------- | -------------------------------- |
+| Web Application | User interface      | Backend API              | End users       | Active  | components/frontend-summary.md   |
+| Backend API     | Business logic      | Database, Authentication | Web application | Active  | components/backend-summary.md    |
+| Database        | Persistent data     | Infrastructure           | Backend API     | Active  | components/database-summary.md   |
+| Monitoring      | Health and alerting | All services             | Operations team | Planned | components/monitoring-summary.md |
+
+Update the graph whenever:
+
+* A component is added or removed
+* A dependency changes
+* A service is replaced
+* The data flow changes
+* The deployment architecture changes
+* A component becomes complete, blocked, or deprecated
+
+Do not redraw the entire graph when only one relationship changes. Update only the affected nodes and connections.
+
+---
+
+## 5. Component Summary Format
+
+Each component summary must use this format:
+
+```text
+# Component Name
+
+## Purpose
+What this component does.
+
+## Current Status
+Planned, active, blocked, testing, completed, or deprecated.
+
+## Responsibilities
+The main functions of this component.
+
+## Inputs
+Data or requests received by the component.
+
+## Outputs
+Data, responses, events, or files produced.
+
+## Dependencies
+Services, packages, APIs, files, or infrastructure required.
+
+## Important Files
+List only the most relevant files.
+
+## Configuration
+Important ports, environment variables, paths, and settings.
+
+## Interfaces
+APIs, protocols, message topics, or commands.
+
+## Known Issues
+Current confirmed problems.
+
+## Approved Decisions
+Relevant decision IDs from DECISIONS.md.
+
+## Recent Changes
+A compact summary of recent updates.
+
+## Next Action
+The next required step.
+```
+
+Keep each component summary compact. Do not copy complete source code into summary files.
+
+---
+
+## 6. Context Loading Protocol
+
+Before performing a task, follow this sequence.
+
+### Stage 1: Classify the Request
+
+Classify the task as one or more of the following:
+
+```text
+Planning
+Development
+Configuration
+Troubleshooting
+Testing
+Deployment
+Documentation
+Security
+Monitoring
+Performance
+Content Creation
+Research
+Migration
+```
+
+Identify the component involved.
+
+### Stage 2: Read the Minimum Context
+
+Start by reading:
+
+```text
+PROJECT_STATE.md
+PROJECT_GRAPH.md
+```
+
+Then read only:
+
+* Relevant requirements
+* Relevant decisions
+* Relevant component summary
+* Active task
+* Related issue
+* Files that will actually be changed
+
+Do not read all project files by default.
+
+### Stage 3: Decide Whether More Context Is Needed
+
+Read detailed source files only when:
+
+* A code change is required
+* A configuration must be verified
+* The summary is outdated
+* There is a contradiction
+* Troubleshooting requires logs
+* The user asks for a complete audit
+* Security or production safety requires verification
+
+### Stage 4: Perform the Task
+
+Use the smallest sufficient context while preserving correctness.
+
+### Stage 5: Update Project Memory
+
+After completing the task, update only the affected files:
+
+* PROJECT_STATE.md
+* PROJECT_GRAPH.md
+* TASKS.md
+* DECISIONS.md
+* CHANGELOG.md
+* ISSUES.md
+* Relevant component summary
+
+Do not update files that were not affected.
+
+---
+
+## 7. Token Budget Management
+
+Apply the following default context budget unless the user requests a full audit:
+
+```text
+10% — Understand the current request
+15% — Read project state and relevant graph nodes
+25% — Read relevant summaries and source files
+40% — Solve or implement the task
+10% — Validate and update project memory
+```
+
+These percentages are guidance, not strict limits.
+
+When the available context is limited:
+
+1. Preserve current requirements.
+2. Preserve approved decisions.
+3. Preserve security and production constraints.
+4. Preserve active errors and troubleshooting findings.
+5. Preserve affected configuration and source code.
+6. Compress historical explanations.
+7. Remove duplicate discussion.
+8. Archive completed details that are no longer operationally relevant.
+
+Never remove:
+
+* Credentials references that explain where secrets are stored, but never store the actual secrets
+* Critical security requirements
+* Rollback procedures
+* Unresolved production issues
+* Approved architectural decisions
+* Acceptance criteria
+* Current infrastructure dependencies
+
+---
+
+## 8. Progressive Detail Rule
+
+Use three levels of project information.
+
+### Level 1: Project Index
+
+Use for navigation and locating the relevant information.
+
+Target size:
+
+```text
+Approximately 300–600 words
+```
+
+### Level 2: Component Summaries
+
+Use for normal planning, troubleshooting, and implementation.
+
+Target size per component:
+
+```text
+Approximately 200–500 words
+```
+
+### Level 3: Detailed Source Files
+
+Use only when implementation, verification, debugging, or auditing requires exact details.
+
+The AI must begin at Level 1 or Level 2 and move to Level 3 only when necessary.
+
+---
+
+## 9. Incremental Update Rules
+
+When modifying an existing project:
+
+* Do not regenerate all files.
+* Do not rewrite files that have not changed.
+* Apply a targeted patch.
+* Show which files are affected.
+* Preserve existing working configuration.
+* Preserve comments and formatting where practical.
+* Record the change in CHANGELOG.md.
+* Update the relevant component summary.
+* Update the project graph only when architecture or dependencies change.
+* Update PROJECT_STATE.md with the new current state.
+
+Before changing a file, determine:
+
+```text
+Why is the change required?
+What requirement does it satisfy?
+What can be affected?
+How will it be verified?
+How can it be rolled back?
+```
+
+---
+
+## 10. Conversation Compression Rules
+
+When a discussion becomes long, create a compact checkpoint.
+
+Use this format:
+
+```text
+# PROJECT CHECKPOINT
+
+## Objective
+The current project objective.
+
+## Confirmed Requirements
+Only approved and active requirements.
+
+## Completed Work
+What is already working.
+
+## Current State
+The latest verified condition.
+
+## Decisions
+Relevant approved decision IDs.
+
+## Active Problem
+The exact unresolved issue.
+
+## Tests Already Performed
+Avoid repeating these tests.
+
+## Files Changed
+Relevant files and their current purpose.
+
+## Next Step
+The next logical action.
+
+## Important Warnings
+Security, production, compatibility, or data-loss risks.
+```
+
+After creating the checkpoint:
+
+* Use the checkpoint instead of rereading the full conversation.
+* Do not repeat previously completed troubleshooting.
+* Do not ask questions that are already answered in the checkpoint.
+* Update the checkpoint when the current state changes.
+
+---
+
+## 11. Retrieval Tags
+
+Assign tags to requirements, decisions, tasks, issues, and summaries.
+
+Example tags:
+
+```text
+#frontend
+#backend
+#database
+#network
+#video
+#streaming
+#monitoring
+#security
+#deployment
+#linux
+#windows
+#api
+#performance
+```
+
+When a user requests a task, search and load records with matching tags.
+
+Example:
+
+```text
+User request:
+Fix stream-freeze detection.
+
+Relevant retrieval:
+#video
+#streaming
+#monitoring
+```
+
+Do not retrieve records tagged only with unrelated areas such as `#frontend` or `#billing`.
+
+---
+
+## 12. Task-to-Context Mapping
+
+Before working, create an internal context map:
+
+```text
+Current Task:
+Affected Component:
+Relevant Requirement IDs:
+Relevant Decision IDs:
+Relevant Task IDs:
+Relevant Issue IDs:
+Files Required:
+Files Not Required:
+Expected Output:
+Validation Method:
+```
+
+Do not display this internal map unless the user requests it.
+
+Use it to prevent unnecessary file loading.
+
+---
+
+## 13. Contradiction Handling
+
+When information conflicts:
+
+1. Prefer the latest explicitly approved user instruction.
+2. Compare it with PROJECT_STATE.md.
+3. Check the related decision record.
+4. Identify which information is outdated.
+5. Do not silently choose between conflicting requirements.
+6. Clearly mention the conflict when it materially affects the result.
+7. Update the outdated project-memory file after the conflict is resolved.
+
+Never merge conflicting configurations without validation.
+
+---
+
+## 14. Source-of-Truth Rules
+
+Each type of information must have one primary source of truth:
+
+| Information                   | Primary Source                 |
+| ----------------------------- | ------------------------------ |
+| Current project condition     | PROJECT_STATE.md               |
+| Architecture and dependencies | PROJECT_GRAPH.md               |
+| Requirements                  | REQUIREMENTS.md                |
+| Approved technical choices    | DECISIONS.md                   |
+| Work status                   | TASKS.md                       |
+| Known faults                  | ISSUES.md                      |
+| Historical changes            | CHANGELOG.md                   |
+| Exact implementation          | Source and configuration files |
+| Technical terminology         | GLOSSARY.md                    |
+
+When a summary conflicts with source code or configuration, verify the implementation and then update the summary.
+
+---
+
+## 15. End-of-Task Memory Update
+
+At the end of every meaningful task, perform a memory update.
+
+Report:
+
+```text
+Task completed:
+Files created:
+Files modified:
+Requirements satisfied:
+Decision added or changed:
+Graph nodes changed:
+Validation completed:
+Current issue status:
+Next recommended step:
+```
+
+Keep the user-facing report brief.
+
+The detailed information should be stored in the appropriate project files.
+
+---
+
+## 16. New Session Startup Protocol
+
+At the beginning of a new AI session:
+
+1. Read PROJECT_INDEX.md.
+2. Read PROJECT_STATE.md.
+3. Read PROJECT_GRAPH.md.
+4. Identify the user's requested component.
+5. Read that component's summary.
+6. Read related active tasks or issues.
+7. Read detailed source files only when required.
+8. Continue from the recorded next step.
+
+Do not begin by scanning the entire project directory.
+
+Do not assume that summaries are current without checking their last-updated information.
+
+---
+
+## 17. Initial Project Setup Behavior
+
+When project-memory files do not exist:
+
+1. Inspect the available project structure.
+2. Identify the major components.
+3. Create PROJECT_INDEX.md.
+4. Create PROJECT_STATE.md.
+5. Create PROJECT_GRAPH.md.
+6. Extract requirements into REQUIREMENTS.md.
+7. Extract confirmed decisions into DECISIONS.md.
+8. Create component summaries.
+9. Identify current tasks and issues.
+10. Create the first project checkpoint.
+11. Ask the user only about critical missing information.
+12. Do not rewrite or modify application source code during project indexing unless requested.
+
+---
+
+## 18. Project Graph Status Markers
+
+Use these status indicators inside the graph:
+
+```text
+✅ Active and verified
+🟡 In progress
+🔴 Blocked or failing
+⚪ Planned
+⛔ Deprecated
+```
+
+Example:
+
+```mermaid
+flowchart LR
+    USER[User] --> WEB["✅ Web Application"]
+    WEB --> API["🟡 Backend API"]
+    API --> DB["✅ PostgreSQL Database"]
+    API --> CACHE["⚪ Redis Cache"]
+    API --> PAYMENT["🔴 Payment Integration"]
+    LEGACY["⛔ Legacy API"]
+```
+
+Use status markers carefully and update them only after validation.
+
+---
+
+## 19. Project Graph Views
+
+For large projects, maintain separate graph views.
+
+### Architecture View
+
+Shows system components and dependencies.
+
+### Data-Flow View
+
+Shows how data moves through the system.
+
+### Deployment View
+
+Shows servers, containers, virtual machines, cloud services, and networks.
+
+### Execution View
+
+Shows the order in which a process or workflow runs.
+
+### Task Dependency View
+
+Shows which tasks depend on other tasks.
+
+Example task graph:
+
+```mermaid
+flowchart TD
+    T1[TASK-001: Gather Requirements]
+    T2[TASK-002: Design Architecture]
+    T3[TASK-003: Configure Infrastructure]
+    T4[TASK-004: Develop Application]
+    T5[TASK-005: Configure Monitoring]
+    T6[TASK-006: Run Testing]
+    T7[TASK-007: Deploy Production]
+
+    T1 --> T2
+    T2 --> T3
+    T2 --> T4
+    T3 --> T5
+    T3 --> T6
+    T4 --> T6
+    T5 --> T7
+    T6 --> T7
+```
+
+Do not place every small function or source file in the main architecture graph. Keep the main graph understandable.
+
+---
+
+## 20. User Commands for Context Control
+
+Recognize the following commands:
+
+### `PROJECT STATUS`
+
+Return:
+
+* Current objective
+* Completed work
+* Active work
+* Blockers
+* Next step
+
+### `PROJECT GRAPH`
+
+Return the current project graph and dependency table.
+
+### `PROJECT CHECKPOINT`
+
+Create or update the compact project checkpoint.
+
+### `UPDATE MEMORY`
+
+Update project summaries, state, tasks, decisions, issues, and graph based on the latest work.
+
+### `LOAD MINIMUM CONTEXT`
+
+Load only the project state, graph, and relevant component summary.
+
+### `FULL PROJECT AUDIT`
+
+Read and analyze all relevant project files. Use this only when explicitly requested because it consumes more tokens.
+
+### `SHOW DECISIONS`
+
+Return approved architectural or technical decisions.
+
+### `SHOW ACTIVE ISSUES`
+
+Return only unresolved issues.
+
+### `SHOW NEXT TASK`
+
+Return the next actionable task and its prerequisites.
+
+### `ARCHIVE COMPLETED CONTEXT`
+
+Move old detailed information into the archive while preserving a compact summary and references.
+
+---
+
+## 21. Response Rules for Token Efficiency
+
+By default:
+
+* Do not repeat the entire project history.
+* Do not reproduce unchanged code.
+* Show only changed sections or patches.
+* Mention the exact file path for each change.
+* Explain commands that the user needs to run.
+* Summarize previously completed work in one or two sentences.
+* Link current work to requirement, decision, task, or issue IDs.
+* Keep detailed logs out of the response unless they are required for diagnosis.
+* Do not give the same explanation repeatedly.
+* Use references such as `DEC-004` or `REQ-012` instead of repeating the full background.
+* Provide a complete file only when the user asks for it or when partial edits could create errors.
+
+---
+
+## 22. Safety Against Context Loss
+
+Before ending a long or important session, ensure that the following are recorded:
+
+* Latest verified configuration
+* Commands already executed
+* Results of those commands
+* Failed approaches
+* Current error message
+* Files changed
+* Backup location
+* Rollback method
+* Active decisions
+* Next step
+
+This prevents the next AI session from repeating work or recommending an already-failed solution.
+
+---
+
+## 23. Final Quality Check
+
+Before responding, silently verify:
+
+* Did I load only relevant context?
+* Did I avoid repeating unchanged information?
+* Did I check the latest project state?
+* Did I respect approved decisions?
+* Did I identify affected graph nodes?
+* Did I use the source of truth?
+* Did I preserve security and rollback information?
+* Did I update the relevant project memory?
+* Can another AI session continue without rereading everything?
+* Did I remain accurate while optimizing token usage?
+
+If any answer is no, correct the response or project-memory files before finishing.
+
